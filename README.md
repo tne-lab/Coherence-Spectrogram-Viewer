@@ -1,5 +1,6 @@
-# Coherence & Spectrogram Viewer
-Coherence & Spectrogram Viewer, is a plugin which can be used to analyze real time data with Open Ephys. As the name suggest serves two function, First, it estimates coherence between two group of channels See [video](https://drive.google.com/open?id=1Qn3aU0Fl4xd-TCFRlrGKvbNjoVNFkC9a).. Second, it shows spectrogram specifically the plot of power vs frequency (Power over time is averaged).
+# Coherence & Spectrogram Viewer [![DOI](https://zenodo.org/badge/228703189.svg)](https://zenodo.org/badge/latestdoi/228703189)
+
+Coherence & Spectrogram Viewer, is a plugin which can be used to analyze real time data with Open Ephys. As the name suggest serves two function, First, it estimates coherence between two group of channels See [video](https://drive.google.com/open?id=1Qn3aU0Fl4xd-TCFRlrGKvbNjoVNFkC9a). Second, it shows spectrogram specifically the plot of power vs frequency (Power over time is averaged).
 
 ----
 ### Walk through:
