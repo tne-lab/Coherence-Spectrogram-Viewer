@@ -43,6 +43,7 @@ CoherenceNode::CoherenceNode()
 	, group1Channels({})
 	, group2Channels({})
 	, nSamplesWait(0)
+    , WhatisIT(1)
 {
 	setProcessorType(PROCESSOR_TYPE_SINK);
 }
@@ -156,7 +157,6 @@ void CoherenceNode::run()
 			dataReader.pullUpdate();
 			Array<int> activeInputs = getActiveInputs();
 			int nActiveInputs = activeInputs.size();
-			auto tstart = std::chrono::high_resolution_clock::now();
 			// Isolation of two entities Coherenece and Spectrogram here
 			if (WhatisIT == 1)
 			{
@@ -169,12 +169,7 @@ void CoherenceNode::run()
 					if (groupNum != -1)
 					{
 						int groupIt = (groupNum == 1 ? getGroupIt(groupNum, chan) : getGroupIt(groupNum, chan) + nGroup1Chans);
-						auto t1 = std::chrono::high_resolution_clock::now();
 						TFR->addTrial(dataReader->getReference(groupIt), groupIt);
-						auto t2 = std::chrono::high_resolution_clock::now();
-						std::cout << "add trials took "
-							<< std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
-							<< " milliseconds" << std::endl;
 					}
 					else
 					{
@@ -215,21 +210,12 @@ void CoherenceNode::run()
 			{
 				for (int activeChan = 0; activeChan < nActiveInputs; ++activeChan)
 				{
-					auto t1 = std::chrono::high_resolution_clock::now();
 					TFR->addTrial(dataReader->getReference(activeChan), activeChan);
-					auto t2 = std::chrono::high_resolution_clock::now();
-					std::cout << "add trials took "
-						<< std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
-						<< " milliseconds" << std::endl;
 				}
 				ttlpwr = TFR->getPowerForChannels();
 			}
 			// Update coherence and reset data buffer           
 			coherenceWriter.pushUpdate();
-			auto tend = std::chrono::high_resolution_clock::now();
-			std::cout << "combs took "
-				<< std::chrono::duration_cast<std::chrono::milliseconds>(tend - tstart).count()
-				<< " milliseconds" << std::endl;
 		}
 	}
 }
