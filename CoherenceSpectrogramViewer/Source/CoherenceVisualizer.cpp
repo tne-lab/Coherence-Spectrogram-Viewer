@@ -546,7 +546,6 @@ void CoherenceVisualizer::refresh()
 				String Idchn = "#" + std::to_string(k + 1);
 				plotHoldingVect[i]->setTitle("Power vs Frequency: CH" + Idchn);
 				plotHoldingVect[i]->plotxy(XYline(freqStart, freqStep, processor->ttlpwr[i], 1, Colours::yellow));
-                plotHoldingVect[i]->setAutoRescale(true);
 				plotHoldingVect[i]->repaint();
 			}
 			else
@@ -642,6 +641,8 @@ void CoherenceVisualizer::buttonClicked(Button* buttonClicked)
 
 	if (buttonClicked == defaultGroups)
 	{
+
+
 		int numInputs = processor->getNumInputs();
 		group1Channels.clear();
 		group2Channels.clear();
@@ -682,18 +683,15 @@ void CoherenceVisualizer::buttonClicked(Button* buttonClicked)
 		group2Channels.clear();
 		for (int i = 0; i < numInputs; i++)
 		{
-            if (processor->TotalNumofChannels.contains(i))
-            {
-                if (i < numInputs / 2)
-                {
-                    group1Channels.add(i);
-
-                }
-                else
-                {
-                    group2Channels.add(i);
-                }
-            }
+			if (processor->TotalNumofChannels.contains(i))
+				if (i < numInputs / 2)
+				{
+					group1Channels.add(i);
+				}
+				else
+				{
+					group2Channels.add(i);
+				}
 		}
 		processor->updateGroup(group1Channels, group2Channels);
 		updateGroupState();
@@ -978,8 +976,6 @@ void CoherenceVisualizer::beginAnimation()
 	alphaE->setEditable(false);
 	CoherenceViewer->setEnabled(false);
 	SpectrogramViewer->setEnabled(false);
-    fstartEditable->setEditable(false);
-    fendEditable->setEditable(false);
 }
 void CoherenceVisualizer::endAnimation()
 {
@@ -992,7 +988,7 @@ void CoherenceVisualizer::endAnimation()
 	{
 		group2Buttons[i]->setEnabled(true);
 	}
-	if (IsSpectrogram == false) // A lot of these are the same between the if/else. I'd take those out to make it more clear what the difference is here.
+	if (IsSpectrogram == false)
 	{
 		resetTFR->setEnabled(true);
 		clearGroups->setEnabled(true);
@@ -1011,7 +1007,7 @@ void CoherenceVisualizer::endAnimation()
 			group2Buttons[i]->setEnabled(true);
 		}
 
-		for (int i = 0; i < (processor->getTotalNumInputChannels()); ++i) 
+		for (int i = 0; i < (processor->getTotalNumInputChannels()); ++i)
 		{
 			plotHoldingVect[i]->setVisible(false);
 		}
@@ -1035,8 +1031,6 @@ void CoherenceVisualizer::endAnimation()
 			group2Buttons[i]->setEnabled(false);
 		}
 	}
-    fstartEditable->setEditable(false);
-    fendEditable->setEditable(false);
 }
 
 bool CoherenceVisualizer::updateFloatLabel(Label* label, float min, float max,

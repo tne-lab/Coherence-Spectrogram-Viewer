@@ -132,6 +132,7 @@ void CoherenceEditor::labelTextChanged(Label* labelThatHasChanged)
         if (updateFloatLabel(labelThatHasChanged, 0, INT_MAX, 8, &newVal))
         {
             processor->setParameter(CoherenceNode::WINDOW_LENGTH, static_cast<float>(newVal));
+            std::cout << "new winLen" << processor->winLen << std::endl;
         }
     }
     /*if (labelThatHasChanged == fstartEditable)

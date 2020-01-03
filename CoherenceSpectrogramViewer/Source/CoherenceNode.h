@@ -181,7 +181,7 @@ private:
 	// 1 means Coherence
 	// 0 means Spectrogram
 	// This seperates coherence and spectrogram logically
-    int WhatisIT; // MOVED TO .cpp when created. = 1;//1-Coherence & 0-Spectrogram
+	int WhatisIT = 1;//1-Coherence & 0-Spectrogram
 	/*End*/
 
 	enum Parameter
