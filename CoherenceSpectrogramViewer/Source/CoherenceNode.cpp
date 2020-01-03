@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "CoherenceNodeEditor.h"
 /********** node ************/
 CoherenceNode::CoherenceNode()
-	: GenericProcessor("Coherence & Spectrogram")
+	: GenericProcessor("TFR-Coherence & Spectrogram")
 	, Thread("Coherence Calc")
 	, segLen(4)
 	, freqStep(1)
