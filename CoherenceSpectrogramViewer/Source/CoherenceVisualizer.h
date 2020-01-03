@@ -70,7 +70,8 @@ public:
 	void buttonEvent(Button* buttonEvent);
 	void buttonClicked(Button* buttonClick) override;
 	void paint(Graphics& g) override;
-
+	void UpdateElectrodeOnTransition();
+	void UpdateVisualizerStateOntransition(bool flag);
 	// Add/remove active channels (when changed in editor/new source) from group options
 	void channelChanged(int chan, bool newState);
 
@@ -153,6 +154,7 @@ private:
 	ScopedPointer<ToggleButton> SpectrogramViewer;
 	ScopedPointer<Label> SpecCalText;
 	std::vector<ScopedPointer<MatlabLikePlot>> plotHoldingVect;
+	
 	/*End*/
 
 	bool updateIntLabel(Label* label, int min, int max, int defaultValue, int* out);

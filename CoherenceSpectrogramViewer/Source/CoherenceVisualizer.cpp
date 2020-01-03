@@ -463,18 +463,18 @@ void CoherenceVisualizer::refresh()
 	{
 		freqStart = processor->freqStart;
 		freqEnd = processor->freqEnd;
-		if (IsSpectrogram == true)
-		{
+		//if (IsSpectrogram == true)
+		//{
 			int NumOfChanChan = (processor->TotalNumofChannels).size();
 			for (int i = 0; i < NumOfChanChan; ++i)
 			{
 				plotHoldingVect[i]->setRange(freqStart, freqEnd, -100, 20000, true);
 			}
-		}
-		else
-		{
+		//}
+		//else
+		//{
 			cohPlot->setRange(freqStart, freqEnd, 0.0, 100, true);
-		}
+		//}
 	}
 
 	freqStep = processor->freqStep;
@@ -642,26 +642,7 @@ void CoherenceVisualizer::buttonClicked(Button* buttonClicked)
 
 	if (buttonClicked == defaultGroups)
 	{
-		int numInputs = processor->getNumInputs();
-		group1Channels.clear();
-		group2Channels.clear();
-		for (int i = 0; i < numInputs; i++)
-		{
-			if (processor->TotalNumofChannels.contains(i))
-				if (i < numInputs / 2)
-				{
-					group1Channels.add(i);
-				}
-				else
-				{
-					group2Channels.add(i);
-				}
-		}
-
-		processor->updateGroup(group1Channels, group2Channels);
-
-		updateGroupState();
-		updateCombList();
+		UpdateElectrodeOnTransition();
 	}
 
 	if (buttonClicked == linearButton)
@@ -677,27 +658,9 @@ void CoherenceVisualizer::buttonClicked(Button* buttonClicked)
 			group1ChannelsCoh2Spec = group1Channels;
 		if (!group2Channels.isEmpty())
 			group2ChannelsCoh2Spec = group2Channels;
-		int numInputs = processor->getNumInputs();
-		group1Channels.clear();
-		group2Channels.clear();
-		for (int i = 0; i < numInputs; i++)
-		{
-            if (processor->TotalNumofChannels.contains(i))
-            {
-                if (i < numInputs / 2)
-                {
-                    group1Channels.add(i);
 
-                }
-                else
-                {
-                    group2Channels.add(i);
-                }
-            }
-		}
-		processor->updateGroup(group1Channels, group2Channels);
-		updateGroupState();
-		updateCombList();
+
+		UpdateElectrodeOnTransition();
 
 		processor->resetTFR();
 		IsSpectrogram = true;
@@ -708,6 +671,7 @@ void CoherenceVisualizer::buttonClicked(Button* buttonClicked)
 		defaultGroups->setEnabled(false);
 		group1Title->setEnabled(false);
 		CoherenceViewer->setToggleState(false, dontSendNotification);
+
 
 		// allow things to change again
 		for (int i = 0; i < group1Buttons.size(); i++)
@@ -970,16 +934,19 @@ void CoherenceVisualizer::beginAnimation()
 		group2Buttons[i]->setEnabled(false);
 	}
 
-	resetTFR->setEnabled(false);
+	
 	clearGroups->setEnabled(false);
 	defaultGroups->setEnabled(false);
+	UpdateVisualizerStateOntransition(false);
+	/*resetTFR->setEnabled(false);
 	linearButton->setEnabled(false);
 	expButton->setEnabled(false);
 	alphaE->setEditable(false);
 	CoherenceViewer->setEnabled(false);
-	SpectrogramViewer->setEnabled(false);
-    fstartEditable->setEditable(false);
-    fendEditable->setEditable(false);
+	SpectrogramViewer->setEnabled(false);*/
+
+    fstartEditable->setEditable(true);
+    fendEditable->setEditable(true);
 }
 void CoherenceVisualizer::endAnimation()
 {
@@ -992,16 +959,19 @@ void CoherenceVisualizer::endAnimation()
 	{
 		group2Buttons[i]->setEnabled(true);
 	}
-	if (IsSpectrogram == false) // A lot of these are the same between the if/else. I'd take those out to make it more clear what the difference is here.
+	UpdateVisualizerStateOntransition(true);
+	//resetTFR->setEnabled(true);
+	//linearButton->setEnabled(true);
+	//expButton->setEnabled(true);
+	//alphaE->setEditable(false);
+	//CoherenceViewer->setEnabled(true);
+	//SpectrogramViewer->setEnabled(true);
+
+	if (IsSpectrogram == false) 
 	{
-		resetTFR->setEnabled(true);
+		
 		clearGroups->setEnabled(true);
 		defaultGroups->setEnabled(true);
-		linearButton->setEnabled(true);
-		expButton->setEnabled(true);
-		alphaE->setEditable(false);
-		CoherenceViewer->setEnabled(true);
-		SpectrogramViewer->setEnabled(true);
 		for (int i = 0; i < group1Buttons.size(); i++)
 		{
 			group1Buttons[i]->setEnabled(true);
@@ -1018,14 +988,9 @@ void CoherenceVisualizer::endAnimation()
 	}
 	else
 	{
-		resetTFR->setEnabled(true);
 		clearGroups->setEnabled(false);
 		defaultGroups->setEnabled(false);
-		linearButton->setEnabled(true);
-		expButton->setEnabled(true);
-		alphaE->setEditable(false);
-		CoherenceViewer->setEnabled(true);
-		SpectrogramViewer->setEnabled(true);
+
 		for (int i = 0; i < group1Buttons.size(); i++)
 		{
 			group1Buttons[i]->setEnabled(false);
@@ -1035,8 +1000,8 @@ void CoherenceVisualizer::endAnimation()
 			group2Buttons[i]->setEnabled(false);
 		}
 	}
-    fstartEditable->setEditable(false);
-    fendEditable->setEditable(false);
+    fstartEditable->setEditable(true);
+    fendEditable->setEditable(true);
 }
 
 bool CoherenceVisualizer::updateFloatLabel(Label* label, float min, float max,
@@ -1154,3 +1119,38 @@ void VerticalGroupSet::addGroup(std::initializer_list<Component*> components)
 }
 void CoherenceVisualizer::setParameter(int, float) {}
 void CoherenceVisualizer::setParameter(int, int, int, float) {}
+
+void CoherenceVisualizer::UpdateElectrodeOnTransition()
+{
+	int numInputs = processor->getNumInputs();
+	group1Channels.clear();
+	group2Channels.clear();
+	for (int i = 0; i < numInputs; i++)
+	{
+		if (processor->TotalNumofChannels.contains(i))
+		{
+			if (i < numInputs / 2)
+			{
+				group1Channels.add(i);
+
+			}
+			else
+			{
+				group2Channels.add(i);
+			}
+		}
+	}
+	processor->updateGroup(group1Channels, group2Channels);
+	updateGroupState();
+	updateCombList();
+}
+
+void CoherenceVisualizer::UpdateVisualizerStateOntransition(bool flag)
+{
+	resetTFR->setEnabled(flag);
+	linearButton->setEnabled(flag);
+	expButton->setEnabled(flag);
+	alphaE->setEditable(false);
+	CoherenceViewer->setEnabled(flag);
+	SpectrogramViewer->setEnabled(flag);
+}

@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 CoherenceEditor::CoherenceEditor(CoherenceNode* p)
     : VisualizerEditor(p, 300, true)
 {
-    tabText = "Coherence & Spectrogram";
+    tabText = "TFR-Coherence & Spectrogram";
     processor = p;
     // Segment length
     int x = 0, y = 0, h = 0, w = 0;
