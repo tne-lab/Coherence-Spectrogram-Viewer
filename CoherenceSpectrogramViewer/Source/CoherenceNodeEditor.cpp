@@ -56,28 +56,6 @@ CoherenceEditor::CoherenceEditor(CoherenceNode* p)
     { x + 75, y + 25, w + 35, h + 27 });
     addAndMakeVisible(stepEditable);
 
-    // Frequencies of interest
-    //y = 0;
-    //x += 105;
-    //foiLabel = createLabel("foiLabel", "Frequencies of Interest", { x + 15, y + 25, w + 80, h + 27 });
-    //addAndMakeVisible(foiLabel);
-
-    //// Start freq
-    //y += 35;
-    //fstartLabel = createLabel("fstartLabel", "Freq Start(Hz):", { x + 5, y + 25, w + 70, h + 27 });
-    //addAndMakeVisible(fstartLabel);
-
-    //fstartEditable = createEditable("fstartEditable", "1", "Start of range of frequencies", { x + 75, y + 25, w + 35, h + 27 });
-    //addAndMakeVisible(fstartEditable);
-
-    //// End Freq
-    //y += 35;
-    //fendLabel = createLabel("fendLabel", "Freq End(Hz):", { x + 5, y + 25, w + 70, h + 27 });
-    //addAndMakeVisible(fendLabel);
-
-    //fendEditable = createEditable("fendEditable", "40", "End of range of frequencies", { x + 75, y + 25, w + 35, h + 27 });
-    //addAndMakeVisible(fendEditable);
-
     setEnabledState(false);
 }
 

@@ -284,8 +284,8 @@ CoherenceVisualizer::CoherenceVisualizer(CoherenceNode* n)
 	int col3 = 330;
 	cohPlot = new MatlabLikePlot();
 	cohPlot->setBounds(bounds = { 330, 55, 600, 500 });
-	//cohPlot->setAuxiliaryString("Hz x Coh"); //Confusing with the base string on the graph.
-	cohPlot->setTitle("Coherence at Selected Combination");
+	//cohPlot->setAuxiliaryString("Coherence scaled from 0-100"); //Confusing with the base string on the graph.
+	cohPlot->setTitle("Coherence vs Frequency");
 	cohPlot->setRange(freqStart, freqEnd, 0.0, 100, true);
 	cohPlot->setControlButtonsVisibile(false);
 	canvas->addAndMakeVisible(cohPlot);
@@ -450,12 +450,12 @@ void CoherenceVisualizer::refresh()
 		artifactCount->setText(String("Buffers Handled: " + String(processor->numTrials) + " & Buffers Discarded: " + String(ceil(processor->numArtifacts))), dontSendNotification);
 		if (!viewport->isParentOf(artifactCount))
 		{
-			addAndMakeVisible(artifactCount);
+            canvas->addAndMakeVisible(artifactCount);
 		}
 	}
 	else
 	{
-		removeChildComponent(getIndexOfChildComponent(artifactCount));
+		canvas->removeChildComponent(canvas->getIndexOfChildComponent(artifactCount));
 	}
 
 	// Update plot if frequency has changed.
@@ -463,18 +463,13 @@ void CoherenceVisualizer::refresh()
 	{
 		freqStart = processor->freqStart;
 		freqEnd = processor->freqEnd;
-		//if (IsSpectrogram == true)
-		//{
-			int NumOfChanChan = (processor->TotalNumofChannels).size();
-			for (int i = 0; i < NumOfChanChan; ++i)
-			{
-				plotHoldingVect[i]->setRange(freqStart, freqEnd, -100, 20000, true);
-			}
-		//}
-		//else
-		//{
-			cohPlot->setRange(freqStart, freqEnd, 0.0, 100, true);
-		//}
+
+		int NumOfChanChan = (processor->getActiveInputs()).size();
+		for (int i = 0; i < NumOfChanChan; ++i)
+		{
+			plotHoldingVect[i]->setRange(freqStart, freqEnd, -100, 20000, true);
+		}
+		cohPlot->setRange(freqStart, freqEnd, 0.0, 100, true);
 	}
 
 	freqStep = processor->freqStep;
@@ -1122,23 +1117,23 @@ void CoherenceVisualizer::setParameter(int, int, int, float) {}
 
 void CoherenceVisualizer::UpdateElectrodeOnTransition()
 {
-	int numInputs = processor->getNumInputs();
+    //int numInputs = processor->getNumInputs();
+    Array<int> activeInputs = processor->getActiveInputs();
+    int numActiveInputs = activeInputs.size();
 	group1Channels.clear();
 	group2Channels.clear();
-	for (int i = 0; i < numInputs; i++)
+    for (int i = 0; i < numActiveInputs; i++)
 	{
-		if (processor->TotalNumofChannels.contains(i))
+        if (i < numActiveInputs / 2)
 		{
-			if (i < numInputs / 2)
-			{
-				group1Channels.add(i);
+			group1Channels.add(activeInputs[i]);
 
-			}
-			else
-			{
-				group2Channels.add(i);
-			}
 		}
+		else
+		{
+			group2Channels.add(activeInputs[i]);
+		}
+		
 	}
 	processor->updateGroup(group1Channels, group2Channels);
 	updateGroupState();

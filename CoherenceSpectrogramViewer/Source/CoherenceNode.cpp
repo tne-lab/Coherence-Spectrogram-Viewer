@@ -28,13 +28,13 @@ CoherenceNode::CoherenceNode()
 	: GenericProcessor("TFR-Coherence & Spectrogram")
 	, Thread("Coherence Calc")
 	, segLen(4)
-	, freqStep(1)
 	, freqStart(1)
 	, freqEnd(40)
 	, stepLen(0.1)
 	, winLen(2)
 	, interpRatio(2)
-	, nGroup1Chans(0)
+    , freqStep(1.0 / float(winLen*interpRatio))
+    , nGroup1Chans(0)
 	, nGroup2Chans(0)
 	, Fs(0)
 	, alpha(0)
@@ -271,8 +271,8 @@ void CoherenceNode::updateSettings()
 	nSamplesAdded = 0;
 
 	// (Start - end freq) / stepsize
-	//freqStep = 1.0/float(winLen*interpRatio);
-	freqStep = 1; // for debugging
+	freqStep = 1.0/float(winLen*interpRatio);
+	//freqStep = 1; // for debugging
 	nFreqs = int((freqEnd - freqStart) / freqStep) + 1;
 	//foi = 0.5:1 / (win_len*interp_ratio) : 30
 
@@ -408,8 +408,8 @@ void CoherenceNode::resetTFR()
 		updateDataBufferSize(segLen*Fs);
 		updateMeanCoherenceSize();
 		numArtifacts = 0;
-
-		freqStep = 1; // for debugging
+        
+        freqStep = 1.0 / float(winLen*interpRatio);; // for debugging
 		nFreqs = int((freqEnd - freqStart) / freqStep) + 1;
 
 		// Trim time close to edge
@@ -470,7 +470,6 @@ bool CoherenceNode::enable()
 		numTrials = 0;
 		numArtifacts = 0;
 		startThread(COH_PRIORITY);
-		//editor->enable();
 	}
 	return isEnabled;
 }
