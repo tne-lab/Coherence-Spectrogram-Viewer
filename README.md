@@ -17,7 +17,7 @@ If you have the GUI built somewhere else, you can specify its location by settin
 ### Walk through:
 Once the plugin installation is done, user has to define parameters for the Time-Frequency Response calculation. This can be viewed in the coherence & spectrogram window as shown below
 <p align="center">
-  <img src="resources/Editor.png" alt="Editor.png"	title="Editor" width="600" height="200" />
+  <img src="./Resources/Editor.png" alt="Editor.png"	title="Editor" width="600" height="200" />
 </p>
 
 >Segment Length: Segment length is the size of trial length / the past data to look for while calculating TFR.
@@ -29,20 +29,20 @@ Once the plugin installation is done, user has to define parameters for the Time
 >PARAM: Number of active channels in the system.
 
 The visualizer for the plugin:
-![alt text](resources/Visualizer.png "Visualizer")
+![alt text](Resources/Visualizer.png "Visualizer")
 
 By default, the visualizer is set for coherence calculation. This can be changed to spectrogram using the radio buttons. One should remember coherence and spectrogram are two mutually exclusive modules and cannot be viewed at the same time within the current setting of the code. Group I and Group II which is present on the left hand side of the plot appears once a source of data is selected from the “SOURCES”
 
 Group I(Gr-I) & Group II(Gr-II) shows the active number of channels. By default, first half of the channels are selected for Group I and other half for Group II. This can be changed as per the individual scenario requirement as show in the adjacent fig. One can choose not to select a channel to calculate coherence, but in order to calculate coherence there should be at least one channel selected in each group at all time.
 
 <p align="center">
-  <img src="resources/GraphComb.png" alt="GraphComb.png"	title="Combinations for Coherence calculatio" width="300" height="150" />
+  <img src="./Resources/GraphComb.png" alt="GraphComb.png"	title="Combinations for Coherence calculatio" width="300" height="150" />
 </p>
 
 This selection of channels populates the drop down box as shown in the adjacent figure. The example shows two possible option in a scenario. 1x16 and 2x16 which is of the form G1 x G2 i.e. channel 1 and 2 are from G1 and 16 from G2.
 
 <p align="center">
-  <img src="resources/Reset.png" alt="Reset.png"	title="Buttons" width="200" height="200" />
+  <img src="./Resources/Reset.png" alt="./Resources/Reset.png"	title="Buttons" width="200" height="200" />
 </p>
 
 
@@ -52,7 +52,7 @@ This selection of channels populates the drop down box as shown in the adjacent 
 | Clear Groups     	| Clear all the selected channels                                                                                                                                                     	|
 | Default   Groups 	| Change the selection to default groups                                                                                                                                          	|
 <p align="center">
-  <img src="resources/Linear.png" alt="Linear.png"	title="TFR calculation options" width="200" height="200" />
+  <img src="./Resources/Linear.png" alt="Linear.png"	title="TFR calculation options" width="200" height="200" />
 </p>
 
 
@@ -68,21 +68,21 @@ One can start acquisition. The coherence will be shown on the plot. If one wishe
 ### Coherence 
 For an input shown below
 
-![alt text](resources/inputA.png "User Interface for Coherence Viewer")
+![alt text](./Resources/inputA.png "User Interface for Coherence Viewer")
 
 Average coherence across all combination. Note the x-axis cooresponds to the frequency in Hz. The y-axis cooresponds to the coherence value which is scaled from 0-100.
 
-![alt text](resources/outputA.png "User Interface for Coherence Viewer")
+![alt text](./Resources/outputA.png "User Interface for Coherence Viewer")
 
 ----
 ### Spectrogram 
 For an input of Sine wave 
 
-![alt text](resources/inputB.png "User Interface for Coherence Viewer")
+![alt text](./Resources/inputB.png "User Interface for Coherence Viewer")
 
 One can see the power for each frequency in range for each channel
 
-![alt text](resources/outputB.png "User Interface for Coherence Viewer")
+![alt text](./Resources/outputB.png "User Interface for Coherence Viewer")
 
 
 
