@@ -147,7 +147,7 @@ std::vector<std::vector<float>> CumulativeTFR::getPowerForChannels()
 			float avg = 0;
 			for (int pr = 0; pr < Time; ++pr)
 			{
-				Totalpower[chn][frq][pr] = Totalpower[chn][frq][pr] + (float)powBuffer[chn][frq][pr].getAverage();
+				Totalpower[chn][frq][pr] = Totalpower[chn][frq][pr] + (float)powBuffer[chn][frq][pr].getSum();
 				avg = avg + Totalpower[chn][frq][pr];
 			}
 			PwrIndFreqAvg[chn][frq] = (avg / Time);
