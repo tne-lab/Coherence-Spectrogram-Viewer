@@ -74,6 +74,7 @@ class CumulativeTFR
 		RealWeightedAccum(double alpha)
 			: count(0)
 			, sum(0)
+			, spectSum(0)
 			, alpha(alpha)
 		{}
 
@@ -81,17 +82,21 @@ class CumulativeTFR
 		{
 			return count > 0 ? sum / (double)count : double();
 		}
-
+		double getSum()
+		{
+			return spectSum;
+		}
 		void addValue(double x)
 		{
 			sum = x + (1 - alpha) * sum;
-			count = 1 + (1 - alpha) * count;
+			spectSum = x;
+			count = 1 + (1 - alpha) * count;			
 		}
 
 	private:
 		double sum;
 		size_t count;
-
+		double spectSum;
 		const double alpha;
 	};
 
