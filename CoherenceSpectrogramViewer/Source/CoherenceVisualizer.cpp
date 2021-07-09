@@ -919,29 +919,36 @@ void CoherenceVisualizer::createElectrodeButton(int chan)
 
 void CoherenceVisualizer::beginAnimation()
 {
-	// Can't change things during data acq.
-	for (int i = 0; i < group1Buttons.size(); i++)
+	if (firstBegin)
 	{
-		group1Buttons[i]->setEnabled(false);
+		firstBegin = false;
 	}
-	for (int i = 0; i < group2Buttons.size(); i++)
-	{
-		group2Buttons[i]->setEnabled(false);
+	else
+	{ 
+		// Can't change things during data acq.
+		for (int i = 0; i < group1Buttons.size(); i++)
+		{
+			group1Buttons[i]->setEnabled(false);
+		}
+		for (int i = 0; i < group2Buttons.size(); i++)
+		{
+			group2Buttons[i]->setEnabled(false);
+		}
+
+
+		clearGroups->setEnabled(false);
+		defaultGroups->setEnabled(false);
+		UpdateVisualizerStateOntransition(false);
+		/*resetTFR->setEnabled(false);
+		linearButton->setEnabled(false);
+		expButton->setEnabled(false);
+		alphaE->setEditable(false);
+		CoherenceViewer->setEnabled(false);
+		SpectrogramViewer->setEnabled(false);*/
+
+		fstartEditable->setEditable(true);
+		fendEditable->setEditable(true);
 	}
-
-	
-	clearGroups->setEnabled(false);
-	defaultGroups->setEnabled(false);
-	UpdateVisualizerStateOntransition(false);
-	/*resetTFR->setEnabled(false);
-	linearButton->setEnabled(false);
-	expButton->setEnabled(false);
-	alphaE->setEditable(false);
-	CoherenceViewer->setEnabled(false);
-	SpectrogramViewer->setEnabled(false);*/
-
-    fstartEditable->setEditable(true);
-    fendEditable->setEditable(true);
 }
 void CoherenceVisualizer::endAnimation()
 {

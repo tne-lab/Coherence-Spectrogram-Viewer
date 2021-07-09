@@ -56,7 +56,8 @@ CoherenceEditor::CoherenceEditor(CoherenceNode* p)
     { x + 75, y + 25, w + 35, h + 27 });
     addAndMakeVisible(stepEditable);
 
-    setEnabledState(false);
+    enable();
+    //canvas->endAnimation();
 }
 
 CoherenceEditor::~CoherenceEditor() {}

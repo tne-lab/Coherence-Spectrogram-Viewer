@@ -314,6 +314,7 @@ void CoherenceNode::updateSettings()
 
 		updateMeanCoherenceSize();
 	}
+	
 }
 
 void CoherenceNode::setParameter(int parameterIndex, float newValue)

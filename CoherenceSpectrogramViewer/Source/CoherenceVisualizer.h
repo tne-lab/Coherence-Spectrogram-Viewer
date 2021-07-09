@@ -154,7 +154,8 @@ private:
 	ScopedPointer<ToggleButton> SpectrogramViewer;
 	ScopedPointer<Label> SpecCalText;
 	std::vector<ScopedPointer<MatlabLikePlot>> plotHoldingVect;
-	
+	bool firstBegin = true;
+
 	/*End*/
 
 	bool updateIntLabel(Label* label, int min, int max, int defaultValue, int* out);
