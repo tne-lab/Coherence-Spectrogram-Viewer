@@ -270,11 +270,7 @@ void CoherenceNode::updateSettings()
 	// Array of samples per channel and if ready to go
 	nSamplesAdded = 0;
 
-	// (Start - end freq) / stepsize
-	freqStep = 1.0/float(winLen*interpRatio);
-	//freqStep = 1; // for debugging
 	nFreqs = int((freqEnd - freqStart) / freqStep) + 1;
-	//foi = 0.5:1 / (win_len*interp_ratio) : 30
 
 	artifactThreshold = 3000; //250
 
@@ -333,6 +329,9 @@ void CoherenceNode::setParameter(int parameterIndex, float newValue)
 		break;
 	case END_FREQ:
 		freqEnd = static_cast<int>(newValue);
+		break;
+	case FREQ_STEP:
+		freqStep = static_cast<float>(newValue);
 		break;
 	case STEP_LENGTH:
 		stepLen = static_cast<float>(newValue);
@@ -407,12 +406,11 @@ void CoherenceNode::resetTFR()
 
 		nSamplesAdded = 0;
 		updateDataBufferSize(segLen*Fs);
-		updateMeanCoherenceSize();
+		
 		numArtifacts = 0;
         
-        freqStep = 1.0 / float(winLen*interpRatio);; // for debugging
 		nFreqs = int((freqEnd - freqStart) / freqStep) + 1;
-
+		updateMeanCoherenceSize();
 		// Trim time close to edge
 		int nSamplesWin = winLen * Fs;
 		nTimes = ((segLen * Fs) - (nSamplesWin)) / Fs * (1 / stepLen) + 1; // Trim half of window on both sides, so 1 window length is trimmed total
@@ -555,8 +553,6 @@ void CoherenceNode::saveCustomParametersToXml(XmlElement* parentElement)
 		group2Node->setAttribute("Chan" + String(i), group2Channels[i]);
 	}
 
-	// ------ Save Other Params ------ //
-	mainNode->setAttribute("alpha", alpha);
 }
 
 void CoherenceNode::loadCustomParametersFromXml()
@@ -600,8 +596,6 @@ void CoherenceNode::loadCustomParametersFromXml()
 					}
 				}
 			}
-			// Load other params
-			alpha = mainNode->getDoubleAttribute("alpha");
 		}
 
 		//Start TFR

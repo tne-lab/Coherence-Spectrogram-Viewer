@@ -250,7 +250,7 @@ CoherenceVisualizer::CoherenceVisualizer(CoherenceNode* n)
 	canvasBounds = canvasBounds.getUnion(bounds);
 
 	//xPos += freqLabelWidth + 10;
-	fstartEditable = new Label("fstartEditable", "1");
+	fstartEditable = new Label("fstartEditable", String(processor->freqStart));
 	fstartEditable->setEditable(true);
 	fstartEditable->addListener(this);
 	fstartEditable->setBounds(bounds = { ColumnII + freqLabelWidth + 10, yPos, 40, TEXT_HT });
@@ -259,6 +259,8 @@ CoherenceVisualizer::CoherenceVisualizer(CoherenceNode* n)
 	canvas->addAndMakeVisible(fstartEditable);
 	canvasBounds = canvasBounds.getUnion(bounds);
 	//xPos -= freqLabelWidth + 10;
+
+
 
 	// End Freq
 	yPos += 20;
@@ -269,7 +271,7 @@ CoherenceVisualizer::CoherenceVisualizer(CoherenceNode* n)
 	canvasBounds = canvasBounds.getUnion(bounds);
 
 	//xPos += freqLabelWidth + 10;
-	fendEditable = new Label("fendEditable", "40");
+	fendEditable = new Label("fendEditable", String(processor->freqEnd));
 	fendEditable->setEditable(true);
 	fendEditable->addListener(this);
 	fendEditable->setBounds(bounds = { ColumnII + freqLabelWidth + 10, yPos, 40, TEXT_HT });
@@ -279,7 +281,27 @@ CoherenceVisualizer::CoherenceVisualizer(CoherenceNode* n)
 	canvasBounds = canvasBounds.getUnion(bounds);
 	//xPos -= freqLabelWidth + 10;
 
-	columnTwoSet->addGroup({ foiLabel, fstartLabel, fstartEditable, fendLabel, fendEditable });
+	// End Freq
+	yPos += 20;
+	fstepLabel = new Label("fstepLabel", "Freq Step(Hz):");
+	fstepLabel->setBounds(bounds = { ColumnII, yPos, freqLabelWidth, TEXT_HT });
+	//fendLabel->setColour(Label::backgroundColourId, Colours::grey);
+	canvas->addAndMakeVisible(fstepLabel);
+	canvasBounds = canvasBounds.getUnion(bounds);
+
+	//xPos += freqLabelWidth + 10;
+	
+	fstepEditable = new Label("fstepEditable", String(processor->freqStep));
+	fstepEditable->setEditable(true);
+	fstepEditable->addListener(this);
+	fstepEditable->setBounds(bounds = { ColumnII + freqLabelWidth + 10, yPos, 40, TEXT_HT });
+	fstepEditable->setColour(Label::backgroundColourId, Colours::grey);
+	fstepEditable->setColour(Label::textColourId, Colours::white);
+	canvas->addAndMakeVisible(fstepEditable);
+	canvasBounds = canvasBounds.getUnion(bounds);
+	//xPos -= freqLabelWidth + 10;
+
+	columnTwoSet->addGroup({ foiLabel, fstartLabel, fstartEditable, fendLabel, fendEditable, fstepLabel, fstepEditable });
 	// ------- Plot ------- //
 	int col3 = 330;
 	cohPlot = new MatlabLikePlot();
@@ -488,6 +510,7 @@ void CoherenceVisualizer::refresh()
 		{
 			int vecSize = coherenceReader->at(comb).size();
 			coh[comb].resize(vecSize);
+	
 			for (int i = 0; i < vecSize; i++)
 			{
 				coh[comb][i] = coherenceReader->at(comb)[i] * 100;
@@ -585,6 +608,15 @@ void CoherenceVisualizer::labelTextChanged(Label* labelThatHasChanged)
 		}
 	}
 
+	if (labelThatHasChanged == fstepEditable)
+	{
+		float newVal;
+		if (updateFloatLabel(labelThatHasChanged, 0, FLT_MAX, 1, &newVal))
+		{
+			processor->setParameter(CoherenceNode::FREQ_STEP, newVal);
+		}
+	}
+
 	if (labelThatHasChanged == fstartEditable)
 	{
 		int newVal;
@@ -601,6 +633,7 @@ void CoherenceVisualizer::labelTextChanged(Label* labelThatHasChanged)
 			processor->setParameter(CoherenceNode::END_FREQ, static_cast<int>(newVal));
 		}
 	}
+
 }
 
 void CoherenceVisualizer::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
@@ -1155,4 +1188,27 @@ void CoherenceVisualizer::UpdateVisualizerStateOntransition(bool flag)
 	alphaE->setEditable(false);
 	CoherenceViewer->setEnabled(flag);
 	SpectrogramViewer->setEnabled(flag);
+}
+
+
+void CoherenceVisualizer::saveVisualizerParameters(XmlElement* xml)
+{
+	XmlElement* visValues = xml->createNewChildElement("VISUALIZER");
+	visValues->setAttribute("alpha", alphaE->getText().getFloatValue());
+	visValues->setAttribute("fstart", fstartEditable->getText().getIntValue());
+	visValues->setAttribute("fend", fendEditable->getText().getIntValue());
+	visValues->setAttribute("fstep", fstepEditable->getText().getFloatValue());
+}
+
+
+void CoherenceVisualizer::loadVisualizerParameters(XmlElement* xml)
+{
+	forEachXmlChildElementWithTagName(*xml, xmlNode, "VISUALIZER")
+	{
+		alphaE->setText(String(xmlNode->getDoubleAttribute("alpha", alphaE->getText().getFloatValue())), sendNotificationSync);
+		fstepEditable->setText(String(xmlNode->getDoubleAttribute("fstep", fstepEditable->getText().getFloatValue())), sendNotificationSync);
+		fstartEditable->setText(String(xmlNode->getIntAttribute("fstart", fstartEditable->getText().getIntValue())), sendNotificationSync);
+		fendEditable->setText(String(xmlNode->getIntAttribute("fend", fendEditable->getText().getIntValue())), sendNotificationSync);
+		processor->resetTFR();
+	}
 }

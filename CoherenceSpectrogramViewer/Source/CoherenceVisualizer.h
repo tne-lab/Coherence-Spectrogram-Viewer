@@ -75,6 +75,10 @@ public:
 	// Add/remove active channels (when changed in editor/new source) from group options
 	void channelChanged(int chan, bool newState);
 
+
+	void saveVisualizerParameters(XmlElement* xml) override;
+	void loadVisualizerParameters(XmlElement* xml) override;
+
 private:
 	// Update list of combinations to choose to graph.
 	void updateCombList();
@@ -127,6 +131,8 @@ private:
 	ScopedPointer<Label> fstartEditable;
 	ScopedPointer<Label> fendLabel;
 	ScopedPointer<Label> fendEditable;
+	ScopedPointer<Label> fstepLabel;
+	ScopedPointer<Label> fstepEditable;
 
 	bool ChanNumChange = false;
 	int lastDelElement;
