@@ -89,7 +89,7 @@ One can see the power for each frequency in range for each channel
 ----
 ### Development
 Note this plugin is still in active development. If you have more ideas for the development of the plugin. Feel free to contact us: 
-<markschatza@gmail.com> or
-<sumedh7.nagrale@gmail.com>
+Developed by <markschatza@gmail.com> and <sumedh7.nagrale@gmail.com>
+Currently maintained by: Sumedh Sopan Nagrale <sumedh7.nagrale@gmail.com>
 
 
